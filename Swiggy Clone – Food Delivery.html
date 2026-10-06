@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Swiggy Clone – Food Delivery</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f4f4f2;--tx:#1c1c1c;--mu:#6b6b6b;--bd:#e6e6e3;--or:#fc8019;--gr:#1ba672;--rd:#d93a3a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#161616;--bg2:#222;--tx:#f2f2f2;--mu:#a0a0a0;--bd:#333}}
+:root[data-theme="dark"]{--bg:#161616;--bg2:#222;--tx:#f2f2f2;--mu:#a0a0a0;--bd:#333}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--bd);display:flex;gap:12px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:800;font-size:22px;color:var(--or)}
+.loc{border:0;background:none;font-weight:600;max-width:200px}
+.sp{flex:1}
+.ib{border:1px solid var(--bd);background:var(--bg);border-radius:20px;padding:8px 14px;font-weight:600}
+.ib b{background:var(--or);color:#fff;border-radius:10px;padding:1px 7px;margin-left:4px}
+main{max-width:1000px;margin:auto;padding:16px}
+.search{width:100%;padding:14px 16px;border:1px solid var(--bd);border-radius:12px;background:var(--bg2);outline:none}
+.search:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--or);outline-offset:2px}
+h2{font-size:20px;margin:22px 0 10px}
+.cats{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.cat{flex:none;text-align:center;border:0;background:none;width:76px;opacity:.7}
+.cat.on{opacity:1;font-weight:800}.cat span{display:block;font-size:34px;background:var(--bg2);border-radius:50%;width:64px;height:64px;line-height:64px;margin:0 auto 4px}
+.cat.on span{box-shadow:0 0 0 3px var(--or)}.cat small{font-size:12px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.chip{border:1px solid var(--bd);background:var(--bg);border-radius:18px;padding:6px 14px;font-size:14px}
+.chip.on{background:var(--tx);color:var(--bg)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+.rc{border:0;background:none;text-align:left;padding:0}
+.rc .im{height:140px;border-radius:16px;display:flex;align-items:flex-end;justify-content:space-between;padding:8px 10px;font-size:54px;position:relative}
+.rc .im em{font-style:normal;font-size:13px;font-weight:800;color:#fff;background:rgba(0,0,0,.65);border-radius:6px;padding:2px 8px}
+.rc h3{margin:8px 0 2px;font-size:16px}.rc p{margin:0;color:var(--mu);font-size:13px}
+.rt{display:inline-block;background:var(--gr);color:#fff;border-radius:6px;padding:0 6px;font-size:12px;font-weight:800}
+.mask{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10;display:none}.mask.on{display:block}
+.pan{position:fixed;top:0;bottom:0;right:0;width:min(440px,100%);background:var(--bg);z-index:11;overflow-y:auto;padding:16px;transform:translateX(100%);transition:transform .25s}
+.pan.on{transform:none}
+.pan.l{left:0;right:auto;width:min(620px,100%);transform:translateX(-100%)}.pan.l.on{transform:none}
+.x{float:right;border:0;background:var(--bg2);border-radius:50%;width:34px;height:34px}
+.it{display:flex;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--bd)}
+.it h4{margin:2px 0;font-size:15px}.it p{margin:0;color:var(--mu);font-size:13px}
+.vg{display:inline-block;width:12px;height:12px;border:1.5px solid var(--gr);position:relative;margin-right:6px;vertical-align:-1px}
+.vg::after{content:"";position:absolute;inset:2px;background:var(--gr);border-radius:50%}.vg.nv{border-color:var(--rd)}.vg.nv::after{background:var(--rd)}
+.add{border:1px solid var(--bd);background:var(--bg);color:var(--gr);font-weight:800;border-radius:8px;padding:6px 20px;min-width:84px}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--bd);border-radius:8px;color:var(--gr);font-weight:800}
+.qty button{border:0;background:none;padding:6px 10px;color:var(--gr);font-weight:800}.qty span{min-width:20px;text-align:center}
+.row{display:flex;justify-content:space-between;padding:4px 0;font-size:14px}.row.t{font-weight:800;font-size:16px;border-top:1px dashed var(--bd);margin-top:8px;padding-top:10px}
+.btn{width:100%;border:0;background:var(--or);color:#fff;font-weight:800;border-radius:10px;padding:14px;margin-top:12px}
+.btn.g{background:var(--bg2);color:var(--tx)}
+input.f,select.f{width:100%;padding:11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);margin:5px 0}
+.cp{display:flex;gap:8px}.cp button{border:1px solid var(--or);background:none;color:var(--or);border-radius:10px;padding:0 16px;font-weight:800}
+.pay label{display:block;border:1px solid var(--bd);border-radius:10px;padding:10px;margin:6px 0}
+.trk{list-style:none;padding:0;margin:14px 0}.trk li{padding:8px 0 8px 28px;position:relative;color:var(--mu)}
+.trk li::before{content:"";position:absolute;left:4px;top:12px;width:12px;height:12px;border-radius:50%;background:var(--bd)}
+.trk li.d{color:var(--tx);font-weight:600}.trk li.d::before{background:var(--gr)}
+.bar{height:8px;background:var(--bg2);border-radius:4px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gr);transition:width .6s}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:10px;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}.toast.on{opacity:1}
+.ep{text-align:center;color:var(--mu);padding:40px 0}
+.cb{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));background:var(--gr);color:#fff;border:0;border-radius:12px;padding:14px 18px;width:100%;display:flex;justify-content:space-between;font-weight:800;margin-top:12px}
+</style></head><body>
+<header>
+<span class="logo">swiggy</span>
+<select class="loc" id="loc" aria-label="Delivery location"><option>Anna Nagar, Chennai</option><option>T. Nagar, Chennai</option><option>Adyar, Chennai</option><option>Velachery, Chennai</option></select>
+<span class="sp"></span>
+<button class="ib" id="thm" aria-label="Toggle theme">🌓</button>
+<button class="ib" id="ordB">Orders</button>
+<button class="ib" id="cartB">🛒 Cart<b id="cc">0</b></button>
+</header>
+<main>
+<input class="search" id="q" placeholder="Search for restaurants or dishes" aria-label="Search">
+<h2>What's on your mind?</h2><div class="cats" id="cats"></div>
+<div class="filters" id="fl"></div>
+<h2 id="rh">Restaurants near you</h2><div class="grid" id="grid"></div>
+</main>
+<div class="mask" id="mask"></div>
+<aside class="pan l" id="menuP" aria-label="Menu"></aside>
+<aside class="pan" id="cartP" aria-label="Cart"></aside>
+<div class="toast" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),fmt=n=>"₹"+n;
+const R=[
+{id:1,n:"Meghna Biryani House",c:["Biryani","Mughlai"],e:"🍛",bg:"#ffe3c2",r:4.4,t:30,f:300,v:0,off:"20% OFF up to ₹100",m:[["Chicken Dum Biryani",260,0,"Biryani"],["Mutton Biryani",340,0,"Biryani"],["Veg Biryani",200,1,"Biryani"],["Chicken 65",190,0,"Starters"],["Paneer Tikka",210,1,"Starters"],["Gulab Jamun",70,1,"Desserts"]]},
+{id:2,n:"Domino's Pizza",c:["Pizza","Italian"],e:"🍕",bg:"#ffd6d6",r:4.2,t:25,f:250,v:0,off:"₹125 OFF above ₹499",m:[["Margherita",199,1,"Pizza"],["Farmhouse",329,1,"Pizza"],["Chicken Dominator",399,0,"Pizza"],["Garlic Bread",129,1,"Sides"],["Choco Lava Cake",109,1,"Desserts"]]},
+{id:3,n:"Sangeetha Veg",c:["South Indian","Dosa"],e:"🥞",bg:"#e4f3d3",r:4.5,t:20,f:200,v:1,off:"Free delivery",m:[["Masala Dosa",110,1,"Tiffin"],["Ghee Pongal",95,1,"Tiffin"],["Idli (3 pcs)",70,1,"Tiffin"],["Meals",180,1,"Meals"],["Filter Coffee",40,1,"Drinks"]]},
+{id:4,n:"Burger King",c:["Burger","Fast Food"],e:"🍔",bg:"#fff0b8",r:4.1,t:22,f:200,v:0,off:"60% OFF up to ₹120",m:[["Whopper",229,0,"Burgers"],["Veg Whopper",189,1,"Burgers"],["Crispy Chicken",149,0,"Burgers"],["Fries",99,1,"Sides"],["Coke",69,1,"Drinks"]]},
+{id:5,n:"Wok Express",c:["Chinese","Noodles"],e:"🍜",bg:"#ffe0ee",r:4.0,t:35,f:250,v:0,off:"₹75 OFF above ₹300",m:[["Veg Hakka Noodles",160,1,"Noodles"],["Chicken Fried Rice",190,0,"Rice"],["Gobi Manchurian",150,1,"Starters"],["Chilli Chicken",210,0,"Starters"]]},
+{id:6,n:"Sweet Karam Coffee",c:["Desserts","Sweets"],e:"🍰",bg:"#f1e3ff",r:4.6,t:28,f:200,v:1,off:"Buy 1 Get 1",m:[["Mysore Pak",120,1,"Sweets"],["Jangri",90,1,"Sweets"],["Brownie",110,1,"Desserts"],["Cold Coffee",95,1,"Drinks"]]},
+{id:7,n:"Healthy Bowl Co.",c:["Healthy","Salads"],e:"🥗",bg:"#d8f5e8",r:4.3,t:30,f:300,v:1,off:"15% OFF",m:[["Quinoa Bowl",249,1,"Bowls"],["Greek Salad",199,1,"Salads"],["Grilled Chicken Bowl",289,0,"Bowls"],["Fresh Juice",110,1,"Drinks"]]},
+{id:8,n:"Madurai Mess",c:["South Indian","Biryani"],e:"🍗",bg:"#ffe8d0",r:3.9,t:40,f:150,v:0,off:"₹50 OFF",m:[["Chicken Chettinad",230,0,"Mains"],["Parotta (2)",50,1,"Breads"],["Egg Kothu",140,0,"Mains"],["Mutton Chukka",290,0,"Mains"]]}];
+const CATS=[["All","🍽️"],["Biryani","🍛"],["Pizza","🍕"],["Burger","🍔"],["South Indian","🥞"],["Chinese","🍜"],["Desserts","🍰"],["Healthy","🥗"]];
+const CODES={SWIGGY50:["50% off up to ₹100",b=>Math.min(100,Math.round(b*.5))],WELCOME:["Flat ₹75 off above ₹299",b=>b>=299?75:0]};
+let S={cat:"All",q:"",veg:0,fast:0,top:0,sort:"rel",cart:{},rid:null,code:null,orders:[],theme:null};
+try{S.orders=JSON.parse(localStorage.getItem("sw_orders")||"[]")}catch(e){}
+const save=()=>{try{localStorage.setItem("sw_orders",JSON.stringify(S.orders))}catch(e){}};
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("on");clearTimeout(toast.h);toast.h=setTimeout(()=>t.classList.remove("on"),1800)}
+function open(p){$("#mask").classList.add("on");$(p).classList.add("on")}
+function closeAll(){$("#mask").classList.remove("on");document.querySelectorAll(".pan").forEach(p=>p.classList.remove("on"))}
+$("#mask").onclick=closeAll;
+document.addEventListener("keydown",e=>e.key==="Escape"&&closeAll());
+$("#thm").onclick=()=>{const d=document.documentElement,dark=getComputedStyle(d).getPropertyValue("--bg").trim()==="#161616";d.dataset.theme=dark?"light":"dark"};
+// Home
+function renderCats(){$("#cats").innerHTML=CATS.map(([c,e])=>`<button class="cat ${S.cat===c?"on":""}" data-c="${c}"><span>${e}</span><small>${c}</small></button>`).join("");
+$("#cats").querySelectorAll(".cat").forEach(b=>b.onclick=()=>{S.cat=b.dataset.c;renderCats();renderGrid()})}
+function renderFilters(){const F=[["veg","Pure Veg"],["fast","Fast Delivery"],["top","Rating 4.0+"]];
+$("#fl").innerHTML=F.map(([k,l])=>`<button class="chip ${S[k]?"on":""}" data-k="${k}">${l}</button>`).join("")+`<select class="chip" id="srt" aria-label="Sort"><option value="rel">Relevance</option><option value="rate">Rating</option><option value="time">Delivery time</option></select>`;
+$("#srt").value=S.sort;$("#srt").onchange=e=>{S.sort=e.target.value;renderGrid()};
+$("#fl").querySelectorAll("button").forEach(b=>b.onclick=()=>{S[b.dataset.k]^=1;renderFilters();renderGrid()})}
+function renderGrid(){const q=S.q.toLowerCase();
+let L=R.filter(r=>(S.cat==="All"||r.c.includes(S.cat)||r.m.some(m=>m[3]===S.cat))&&(!S.veg||r.v)&&(!S.fast||r.t<=25)&&(!S.top||r.r>=4)&&(!q||r.n.toLowerCase().includes(q)||r.c.join(" ").toLowerCase().includes(q)||r.m.some(m=>m[0].toLowerCase().includes(q))));
+if(S.sort==="rate")L.sort((a,b)=>b.r-a.r);if(S.sort==="time")L.sort((a,b)=>a.t-b.t);
+$("#rh").textContent=L.length+" restaurants to explore";
+$("#grid").innerHTML=L.length?L.map(r=>`<button class="rc" data-id="${r.id}"><div class="im" style="background:${r.bg}"><span>${r.e}</span><em>${r.off}</em></div><h3>${r.n}</h3><p><span class="rt">★ ${r.r}</span> · ${r.t} mins</p><p>${r.c.join(", ")}</p></button>`).join(""):`<div class="ep" style="grid-column:1/-1">No restaurants match. Try clearing a filter or search.</div>`;
+$("#grid").querySelectorAll(".rc").forEach(b=>b.onclick=()=>openMenu(+b.dataset.id))}
+$("#q").oninput=e=>{S.q=e.target.value;renderGrid()};
+// Menu
+function openMenu(id){const r=R.find(x=>x.id===id),q=S.q.toLowerCase();let veg=0,html="";
+const sections=[...new Set(r.m.map(m=>m[3]))];
+html=`<button class="x" onclick="closeAll()" aria-label="Close">✕</button><h2 style="margin-top:0">${r.n}</h2><p style="color:var(--mu);margin:0 0 8px"><span class="rt">★ ${r.r}</span> · ${r.t} mins · ${r.c.join(", ")}</p><label class="chip" style="display:inline-block"><input type="checkbox" id="mv"> Veg only</label><div id="mi"></div><div id="mcb"></div>`;
+$("#menuP").innerHTML=html;open("#menuP");
+const draw=()=>{const vo=$("#mv").checked;$("#mi").innerHTML=sections.map(s=>{const it=r.m.map((m,i)=>[m,i]).filter(([m])=>m[3]===s&&(!vo||m[2]));return it.length?`<h2>${s}</h2>`+it.map(([m,i])=>{const k=r.id+"-"+i,n=(S.cart[k]||{}).q||0;return `<div class="it"><div><span class="vg ${m[2]?"":"nv"}"></span><h4 style="display:inline">${m[0]}</h4><p>${fmt(m[1])}</p></div>${n?`<div class="qty"><button data-k="${k}" data-d="-1">−</button><span>${n}</span><button data-k="${k}" data-d="1">+</button></div>`:`<button class="add" data-k="${k}" data-d="1">ADD</button>`}</div>`}).join(""):""}).join("");
+$("#mi").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>change(b.dataset.k,+b.dataset.d,draw));
+const c=cartInfo();$("#mcb").innerHTML=c.n?`<button class="cb" id="vc"><span>${c.n} item${c.n>1?"s":""}</span><span>View cart ${fmt(c.sub)}</span></button>`:"";if(c.n)$("#vc").onclick=openCart};
+$("#mv").onchange=draw;draw()}
+function change(k,d,cb){const [rid,i]=k.split("-").map(Number);
+if(S.rid&&S.rid!==rid&&d>0&&Object.keys(S.cart).length){if(!confirm("Your cart has items from another restaurant. Start a new cart?"))return;S.cart={};S.code=null}
+S.rid=rid;const m=R.find(r=>r.id===rid).m[i];const e=S.cart[k]||{q:0,n:m[0],p:m[1],v:m[2]};e.q+=d;
+if(e.q<=0)delete S.cart[k];else S.cart[k]=e;if(!Object.keys(S.cart).length)S.rid=null;badge();cb&&cb()}
+function cartInfo(){const v=Object.values(S.cart);return{n:v.reduce((a,b)=>a+b.q,0),sub:v.reduce((a,b)=>a+b.q*b.p,0)}}
+function badge(){$("#cc").textContent=cartInfo().n}
+// Cart
+function bill(){const {sub}=cartInfo(),r=R.find(x=>x.id===S.rid),del=sub>=500?0:35,fee=Math.round(sub*.05),disc=S.code?CODES[S.code][1](sub):0;
+return{sub,del,fee,disc,tot:sub+del+fee-disc}}
+function openCart(){const P=$("#cartP"),ks=Object.keys(S.cart);
+if(!ks.length){P.innerHTML=`<button class="x" onclick="closeAll()" aria-label="Close">✕</button><div class="ep">Your cart is empty.<br>Add dishes from a restaurant to get started.</div>`;open("#cartP");return}
+const r=R.find(x=>x.id===S.rid),b=bill();
+P.innerHTML=`<button class="x" onclick="closeAll()" aria-label="Close">✕</button><h2 style="margin-top:0">${r.e} ${r.n}</h2>`+ks.map(k=>{const e=S.cart[k];return `<div class="it"><div><span class="vg ${e.v?"":"nv"}"></span><h4 style="display:inline">${e.n}</h4></div><div><div class="qty"><button data-k="${k}" data-d="-1">−</button><span>${e.q}</span><button data-k="${k}" data-d="1">+</button></div> <b style="margin-left:8px">${fmt(e.q*e.p)}</b></div></div>`}).join("")+
+`<h2>Offers</h2><div class="cp"><input class="f" id="cd" placeholder="Try SWIGGY50 or WELCOME" value="${S.code||""}"><button id="ap">Apply</button></div>
+<h2>Bill details</h2><div class="row"><span>Item total</span><span>${fmt(b.sub)}</span></div><div class="row"><span>Delivery fee</span><span>${b.del?fmt(b.del):"FREE"}</span></div><div class="row"><span>Platform &amp; GST</span><span>${fmt(b.fee)}</span></div>${b.disc?`<div class="row" style="color:var(--gr)"><span>Coupon ${S.code}</span><span>−${fmt(b.disc)}</span></div>`:""}<div class="row t"><span>To pay</span><span>${fmt(b.tot)}</span></div>
+<h2>Delivery address</h2><input class="f" id="ad" placeholder="House no., street, landmark"><input class="f" id="ph" inputmode="numeric" maxlength="10" placeholder="Phone number">
+<h2>Payment</h2><div class="pay"><label><input type="radio" name="pm" value="UPI" checked> UPI</label><label><input type="radio" name="pm" value="Card"> Credit / Debit card</label><label><input type="radio" name="pm" value="Cash on delivery"> Cash on delivery</label></div>
+<button class="btn" id="po">Place order · ${fmt(b.tot)}</button>`;
+P.querySelectorAll("[data-k]").forEach(x=>x.onclick=()=>change(x.dataset.k,+x.dataset.d,openCart));
+$("#ap").onclick=()=>{const c=$("#cd").value.trim().toUpperCase();if(!CODES[c]){S.code=null;toast("Invalid code");openCart();return}
+if(!CODES[c][1](cartInfo().sub)){toast("Add more items to use "+c);return}S.code=c;toast(c+" applied");openCart()};
+$("#po").onclick=place;open("#cartP")}
+function place(){const a=$("#ad").value.trim(),p=$("#ph").value.trim();
+if(a.length<5)return toast("Enter a full delivery address");if(!/^\d{10}$/.test(p))return toast("Enter a 10-digit phone number");
+const r=R.find(x=>x.id===S.rid),b=bill(),o={id:"SW"+Date.now().toString().slice(-6),rn:r.n,e:r.e,items:Object.values(S.cart).map(e=>e.q+"× "+e.n),tot:b.tot,addr:a,pay:document.querySelector("[name=pm]:checked").value,at:new Date().toLocaleString("en-IN"),eta:r.t};
+S.orders.unshift(o);save();S.cart={};S.rid=null;S.code=null;badge();track(o,true)}
+// Tracking + orders
+const STEPS=["Order placed","Restaurant is preparing","Partner picked up your order","Out for delivery","Delivered"];
+function track(o,live){const P=$("#cartP");let s=live?0:4;
+const draw=()=>{P.innerHTML=`<button class="x" onclick="closeAll()" aria-label="Close">✕</button><h2 style="margin-top:0">${s===4?"Order delivered 🎉":"Order confirmed"}</h2><p style="color:var(--mu)">#${o.id} · ${o.rn} · ${fmt(o.tot)} · ${o.pay}</p><div class="bar"><i style="width:${(s+1)*20}%"></i></div><p>${s<4?"Arriving in about "+Math.max(1,o.eta-s*7)+" mins":"Enjoy your meal!"}</p><ul class="trk">${STEPS.map((t,i)=>`<li class="${i<=s?"d":""}">${t}</li>`).join("")}</ul><p style="color:var(--mu);font-size:14px">${o.items.join(", ")}<br>Deliver to: ${o.addr}</p><button class="btn g" onclick="closeAll()">Back to restaurants</button>`};
+draw();open("#cartP");if(live){const h=setInterval(()=>{if(!$("#cartP").classList.contains("on")||s>=4){clearInterval(h);return}s++;draw()},2500)}}
+$("#ordB").onclick=()=>{const P=$("#cartP");
+P.innerHTML=`<button class="x" onclick="closeAll()" aria-label="Close">✕</button><h2 style="margin-top:0">Past orders</h2>`+(S.orders.length?S.orders.map((o,i)=>`<div class="it"><div><h4>${o.e} ${o.rn}</h4><p>${o.items.join(", ")}</p><p>${o.at}</p></div><div style="text-align:right"><b>${fmt(o.tot)}</b><br><button class="add" data-i="${i}" style="margin-top:6px;min-width:0;padding:4px 12px">Track</button></div></div>`).join(""):`<div class="ep">No orders yet.<br>Your orders will show up here.</div>`);
+P.querySelectorAll("[data-i]").forEach(b=>b.onclick=()=>track(S.orders[+b.dataset.i],false));open("#cartP")};
+$("#cartB").onclick=openCart;
+renderCats();renderFilters();renderGrid();badge();
+</script></body></html>
